@@ -1,5 +1,6 @@
 <template>
   <div class="scrollable-table">
+    <Loading :active="isLoading" :is-full-page="false" />
     <table class="table">
       <thead :class="{ fixed: isHeaderFixed }">
         <tr>
@@ -16,8 +17,15 @@
 </template>
 
 <script>
+// Import component
+import Loading from "vue3-loading-overlay";
+import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
+
 export default {
   name: "ScrollableTable",
+  components: {
+    Loading,
+  },
   props: {
     columns: {
       type: Array,
@@ -35,6 +43,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>
@@ -45,6 +57,7 @@ export default {
   overflow-y: auto
   overflow-x: auto
   height: calc(100vh - 100px - 73.28px - 50px)
+  position: relative
 
 .table
   border-collapse: collapse

@@ -1,7 +1,16 @@
 <template>
   <div class="container">
     <MainLogo />
-    <ScrollableTable :columns="columns" :rows="rows" :isHeaderFixed="true" />
+    <div v-if="isError" class="error-message">
+      <span>Data could not be loaded. Please try again</span>
+    </div>
+    <ScrollableTable
+      v-else
+      :columns="columns"
+      :rows="rows"
+      :isHeaderFixed="true"
+      :isLoading="isLoading"
+    />
   </div>
 </template>
 
@@ -19,15 +28,22 @@ export default {
     MainLogo,
   },
   setup() {
+    // Heroku url is used to circumvent cors policy from the server
     const herokuUrl = process.env.VUE_APP_HEROKU_URL;
+    const isLoading = ref(false);
+    const isError = ref(false);
     const columns = ref([]);
     const rows = ref([]);
 
     const url = `${herokuUrl}https://gitlab.com/-/snippets/2328789/raw/main/huge_6MB.json`;
 
     const getData = async () => {
+      isError.value = false;
+      isLoading.value = true;
+
       try {
         const response = await fetchGetApi(url);
+        isLoading.value = false;
 
         columns.value = response.columns.sort(alphabeticalSorting);
 
@@ -49,7 +65,8 @@ export default {
           rows.value.push(Object.values(key));
         });
       } catch (error) {
-        console.error(error);
+        isLoading.value = false;
+        isError.value = true;
       }
     };
 
@@ -60,6 +77,8 @@ export default {
     return {
       columns,
       rows,
+      isLoading,
+      isError,
     };
   },
 };
@@ -74,4 +93,12 @@ export default {
 
 .logo-container
   margin-bottom: 50px
+
+.error-message
+  display: flex
+  align-items: center
+  justify-content: center
+  height: calc(100vh - 100px - 73.28px - 50px)
+  font-weight: 500
+  font-size: 20px
 </style>
