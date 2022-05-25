@@ -6,4 +6,13 @@ module.exports = {
       return args;
     });
   },
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: "kebab",
+      rtlSupport: false,
+    },
+  },
+
+  transpileDependencies: ["quasar"],
 };
