@@ -18,6 +18,7 @@
 import { ref, onMounted } from "vue";
 import ScrollableTable from "@/components/ScrollableTable.vue";
 import MainLogo from "@/components/MainLogo.vue";
+import { alphabeticalSorting } from "@/helpers/alphabeticalSorting";
 import { fetchGetApi } from "@/api/api";
 
 export default {
@@ -43,7 +44,7 @@ export default {
       try {
         const response = await fetchGetApi(url);
 
-        columns.value = response.columns;
+        columns.value = response.columns.sort(alphabeticalSorting);
 
         rows.value = response.rows;
 

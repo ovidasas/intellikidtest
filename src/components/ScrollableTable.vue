@@ -11,7 +11,7 @@
       <template v-slot:before>
         <thead class="thead-sticky">
           <tr>
-            <th v-for="(column, index) in columnList" :key="index">
+            <th v-for="(column, index) in columns" :key="index">
               {{ column }}
             </th>
           </tr>
@@ -27,10 +27,9 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import Loading from "vue3-loading-overlay";
 import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
-import { alphabeticalSorting } from "@/helpers/alphabeticalSorting";
 
 export default {
   name: "ScrollableTable",
@@ -60,29 +59,12 @@ export default {
     },
   },
   setup(props) {
-    //column_list.value.sort(alphabeticalSorting);
-
-    //console.log(column_list.value);
-
-    //console.log(props.columns);
-    //console.log(props.rows);
-    const columnList = computed(() => {
-      return props.columns;
-    });
-
-    //console.log(columnList);
-
     const rowList = computed(() => {
       return props.rows;
     });
 
-    onMounted(() => {
-      columnList.value.sort(alphabeticalSorting);
-    });
-
     return {
       rowList,
-      columnList,
     };
   },
 };
@@ -117,4 +99,7 @@ export default {
 
   tr:hover
     background-color: #D6EEEE
+
+.q-table__card
+  box-shadow: none
 </style>
