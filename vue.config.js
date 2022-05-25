@@ -16,5 +16,5 @@ module.exports = {
 
   transpileDependencies: ["quasar"],
 
-  publicPath: "/intellikidtest/",
+  publicPath: process.env.NODE_ENV === "production" ? "/intellikidtest/" : "/",
 };
